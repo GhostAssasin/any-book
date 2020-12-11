@@ -1,11 +1,8 @@
-import API from './Api'
+import API from './API'
 
-const API_KEY = process.env.REACT_APP_API_KEY;
-
-export async function fetchCategoriesAX() {
-    const url = `https://api.wegmans.io/products/categories?api-version=2018-10-18${API_KEY}`;
-
-    return await API.get(url).then(response => {
-        return response.data;
+export async function fetchAllBooksAX(startIndex) {
+    return await API.get('volumes', {params: {q: 'fantasy',startIndex: `${startIndex}`, maxResults: `${40}`, projection:'full', filter: 'paid-ebooks'}})
+        .then(response => {
+        return response.data.items;
     }).catch(err => ({ error: err }))
 }
