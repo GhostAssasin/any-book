@@ -1,0 +1,47 @@
+.add-menu{
+  top: 50px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  z-index: 90;
+  position: fixed;
+  box-shadow: 0 0 4px lightsteelblue;
+  background-color: white;
+  padding: 6px;
+
+}
+.empty{
+  width: 190px;
+}
+.empty-r{
+  width: 600px;
+  position: relative;
+  left: 90px;
+}
+
+.categories{
+  //position: absolute;
+  //left: 400px;
+
+  top: 6px;
+
+}
+.img-2{
+  position: absolute;
+  height: 35px;
+  left: 150px;
+  top: 6px;
+}
+
+.sort{
+  position: absolute;
+  left: 28px;
+
+  top: 6px;
+  img{
+    position: absolute;
+    height: 30px;
+    left: -28px;
+    top: 3px;
+  }
+}

@@ -1,15 +1,22 @@
 import {combineReducers} from 'redux';
-import allBooksReducer from "./allBooks/all.books.reducer";
-import wishlistReducer from "./wishlist/wishlist.reducer";
-import basketReducer from "./basket/basket.reducer";
+import allBooks from "./allBooks/all.books.reducer";
+import wishlist from "./wishlist/wishlist.reducer";
+import basket from "./basket/basket.reducer";
+import storageSession from "redux-persist/lib/storage";
+import { persistReducer } from "redux-persist";
 
+const rootPersistConfig = {
+    key: 'root',
+    storage: storageSession,
+    whitelist: ['wishlist', 'basket']
+};
 
 const rootReducer = combineReducers({
-    wishlistReducer,
-    allBooksReducer,
-    basketReducer,
+    wishlist,
+    allBooks,
+    basket,
 
 })
 
-export default rootReducer
+export default persistReducer(rootPersistConfig, rootReducer);
 

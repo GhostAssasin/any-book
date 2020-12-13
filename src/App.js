@@ -1,41 +1,27 @@
-import { Provider } from 'react-redux';
-import {store} from "./redux/configure-store";
-import AllBooks from "./pages/main_page/containers/allBooks";
-import AppHeader from "./pages/main_page/containers/header";
-import { Container, Row, Col } from 'reactstrap';
-import {BrowserRouter, Route, Switch} from "react-router-dom";
 import React from "react";
-import Wishlist from "./pages/wishlist/Wishlist";
-import Basket from "./pages/basket/containers/basket";
+import AppHeader from "./containers/header/header";
+import {BrowserRouter} from "react-router-dom";
+import Routes from "./containers/routes/Routes";
 
 
 function App() {
   return (
-      <Provider store={store}>
           <BrowserRouter>
-          <AppHeader/>
-            <Container>
-
-              <Row>
-
-
-                  <Col >
-
-                          <Switch>
-                            <Route exact path='/wishlist'><Wishlist/></Route>
-                            <Route exact path='/basket'><Basket/></Route>
-                            <Route path='*' ><AllBooks/></Route>
-                          </Switch>
-
-
-                      </Col>
-              </Row>
-            </Container>
+              <AppHeader/>
+                  <div className="App" style={{
+                      display: 'flex',
+                      flexWrap: 'nowrap',
+                      position: 'absolute',
+                      top: '74px',
+                      left: '0',
+                      right: '0',
+                      maxWidth: '1200px',
+                      marginLeft: 'auto',
+                      marginRight: 'auto'
+                  }}>
+                      <Routes/>
+                  </div>
           </BrowserRouter>
-
-
-
-      </Provider>
   );
 }
 

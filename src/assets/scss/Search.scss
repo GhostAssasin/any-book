@@ -1,0 +1,21 @@
+.search{
+  position: absolute;
+  right: 0;
+  width: 300px;
+  top: 6px;
+  img{
+    position: absolute;
+    height: 35px;
+    right: 20px;
+    top: 2px;
+    opacity: 0.7;
+  }
+  img:hover{
+    -moz-transition: all 0.2s;
+    -webkit-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s;
+    opacity:1;
+    filter:alpha(opacity=100);
+  }
+}

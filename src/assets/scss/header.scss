@@ -1,0 +1,53 @@
+
+
+.header{
+  height: 50px;
+  top: 0;
+  left: 0;
+  display: flex;
+  z-index: 100;
+  position: fixed;
+  background: linear-gradient(180deg, rgb(253,248,245), #EFF2F2);;
+  width: 100%;
+  box-shadow: 0 0 4px lightsteelblue;
+}
+
+.header-images{
+  position: absolute;
+  top: 0;
+  right: 10px;
+
+    img{
+      opacity:0.7;
+      margin-right: 30px;
+      height: 48px;
+    }
+    img:hover{
+    -moz-transition: all 0.2s;
+    -webkit-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s;
+    opacity:1;
+    filter:alpha(opacity=100);
+  }
+
+}
+
+.logo-container{
+  position: absolute;
+  top: 0;
+  left: 5px;
+}
+
+.logo{
+  opacity:0.9;
+  height: 48px;
+}
+.logo:hover{
+  -moz-transition: all 0.2s;
+  -webkit-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s;
+  opacity:1;
+  filter:alpha(opacity=100);
+}

@@ -1,13 +1,15 @@
-import {fetchAllBooksAX} from "../../api/libs";
+import {fetchAllBooksAX} from "../../api";
 import {call, put} from "@redux-saga/core/effects";
 import * as type from "../action.types";
 
 export function* fetchAllBooks(payload) {
 
-    const json = yield call(fetchAllBooksAX, payload.startIndex);
-    if (json.error) {
-        yield put({ type: type.ERROR_RESPONSE, json });
+    const data = yield call(fetchAllBooksAX, payload);
+    if (data.error) {
+        yield put({ type: type.ERROR_RESPONSE, data });
+    } else if(data.items) {
+        yield put({ type: type.ALL_BOOKS_RECEIVED_RESPONSE, json :data });
     } else {
-        yield put({ type: type.ALL_BOOKS_RECEIVED_RESPONSE, json });
+        yield put({ type: type.ALL_BOOKS_FAILED_SEARCH_RESPONSE });
     }
 }

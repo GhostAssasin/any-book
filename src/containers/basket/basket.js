@@ -1,28 +1,37 @@
 import React from "react"
 import {connect} from "react-redux";
-import BasketBookEntity from "../components/basketBookEntity";
+import BasketBookEntity from "../../components/basket/BasketBookEntity";
 import {
     changeMultiplierRequest,
     clearBasketRequest,
     removeBookFromBasketRequest
-} from "../../../redux/basket/basket.actions";
+} from "../../redux/basket/basket.actions";
 
 class Basket extends React.Component{
     render() {
         const items = this.props.items.map((item,index) => {
             return(
-                <BasketBookEntity key={'wishlist'+index}  item = {item} removeBookFromBasket = {this.props.removeBookFromBasket}  changeMultiplier = {this.props.changeMultiplier} />
+                <BasketBookEntity
+                    key={'wishlist'+index}
+                    item = {item}
+                    removeBookFromBasket = {this.props.removeBookFromBasket}
+                    changeMultiplier = {this.props.changeMultiplier}
+                />
             );
         });
         return(
-            <div>{items}</div>
+            <div>
+                {items}
+                <div><h3>Total Cost: {this.props.totalCost}</h3></div>
+            </div>
         );
     }
 }
 
 const mapStateToProps =(...state) =>{
     return({
-        items: state[0].basketReducer.items,
+        items: state[0].basket.items,
+        totalCost: state[0].basket.totalCost,
     });}
 
 

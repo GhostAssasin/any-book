@@ -1,61 +1,83 @@
 import * as type from "../action.types";
+import {changeVisibility, parseCategories, parseData} from "../../helpers/helpers";
 
 const INITIAL_STATE = {
     items: [],
     startIndex: 0,
-
-
+    searchKey: 'fantast',
+    searchField: '',
+    orderBy: 'relevance',
+    searchError: false,
+    categories: [],
+    selectedFilterCategories : [],
+    filterCategoriesValue: [],
+    hasMore: false
 };
 
 const allBooksReducer = (state = INITIAL_STATE, action) => {
 
     switch (action.type) {
-        case type.ALL_BOOKS_RECEIVED_RESPONSE:
-            let tmpItems = [];
-            let tmpCategory;
+        case type.ALL_BOOKS_RECEIVED_RESPONSE: {
+            let tmpHasMore = false;
+            if(action.totalItems>0){tmpHasMore = true}
+            const tmpItems = parseData(action.json.items, state.items);
 
-            action.json.forEach((item,index) => {
-                let rating = Math.random()*10 ;
-                (rating > 5)? rating/= 2 : rating+=  0.001;
-                (rating < 3)? rating+= 2 : rating-= 0.001;
-                (item.volumeInfo.categories)? tmpCategory = item.volumeInfo.categories : tmpCategory = '';
-                let tmpItem = {
-                    id: item.id,
-                    price: item.saleInfo.listPrice,
-                    authors: item.volumeInfo.authors,
-                    imgLink: item.volumeInfo.imageLinks.thumbnail,
-                    title: item.volumeInfo.title,
-                    description: item.volumeInfo.description,
-                    categories: tmpCategory,
-                    rating: rating.toFixed(2),
-                    inWantedList: false,
-                    multiplier: 1
+            const tmpCategories = parseCategories(action.json.items, state.items, state.categories);
 
-                };
-                if (tmpItem.id !== undefined
-                    && tmpItem.price !== undefined
-                    && tmpItem.authors !== undefined
-                    && tmpItem.imgLink !== undefined
-                    && tmpItem.title !== undefined
-                    && tmpItem.description !== undefined) {
-                    let tpmItemU = true;
-                    state.items.forEach((item) => {if (item.id === tmpItem.id) tpmItemU = false;})
-                    if (tpmItemU) tmpItems.push(tmpItem);
-                }
-            }
-            );
             return {
                 ...state,
-                items: [...state.items,...tmpItems],
-                startIndex: (state.startIndex + tmpItems.length)
+                searchError: false,
+                items: [...state.items, ...tmpItems],
+                startIndex: (state.startIndex + 40),
+                categories: tmpCategories,
+                hasMore: tmpHasMore
+            }
+        }
+        case type.CHANGE_SEARCH_FIELD:
+            return {
+                ...state,
+                searchField: action.payload
+            }
+
+        case type.CHANGE_SEARCH_KEY:
+
+            return {
+                ...state,
+                searchKey: state.searchField,
+                searchField: ''
             }
         case type.CLEAR_ALL_BOOKS:
             return {
                 ...state,
                 items: [],
-                startIndex: 0
+                startIndex: 0,
+                categories: [],
+                selectedFilterCategories : [],
+                filterCategoriesValue: [],
+                hasMore: false
             }
+        case type.ALL_BOOKS_FAILED_SEARCH_RESPONSE:
+            return {
+                ...state,
+                searchError: true
+            }
+        case type.FILTER_CATEGORIES:
+        {const tmpItems = changeVisibility(state.items, action.payload);
+            return {
+                ...state,
+                items: tmpItems
+            }
+        }
+        case type.SET_FILTER_CATEGORIES:
+        {
+            let tmpFilterCategoriesValue = [{}];
+            if (action.payload !== undefined) tmpFilterCategoriesValue = action.payload;
+            return {
+                ...state,
+                filterCategoriesValue: tmpFilterCategoriesValue,
 
+            }
+        }
 
 
         default:

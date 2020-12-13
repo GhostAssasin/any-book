@@ -1,28 +1,37 @@
 import React from "react"
 import {connect} from "react-redux";
-import BookEntity from "../main_page/components/BookEntity";
+import BookEntity from "../../components/allbooks/BookEntity";
 import {
     clearWishlistRequest,
     removeBookFromWishlistRequest
 } from "../../redux/wishlist/wishlist.actions";
 import {addBookToBasketRequest} from "../../redux/basket/basket.actions";
+import {Col, Row} from "reactstrap";
 
 class Wishlist extends React.Component{
    render() {
         const items = this.props.items.map((item,index) => {
             return(
-                <BookEntity key={'wishlist'+index}  item = {item} type ={false} addBookToBasket ={this.props.addBookToBasket} removeBookFromWishlist = {this.props.removeBookFromWishlist}/>
-            );
+                <Col  xs='4' key={item.id}>
+                    <BookEntity
+                        key={'wishlist'+index}
+                        item = {item}
+                        type ={false}
+                        addBookToBasket ={this.props.addBookToBasket}
+                        removeBookFromWishlist = {this.props.removeBookFromWishlist}
+                    />
+                </Col>
+                );
         });
         return(
-            <div>{items}</div>
+            <Row style = {{width: '1000px'}}>{items}</Row>
         );
     }
 }
 
 const mapStateToProps =(...state) =>{
     return({
-        items: state[0].wishlistReducer.items,
+        items: state[0].wishlist.items,
     });}
 
 
