@@ -1,6 +1,6 @@
 .add-menu{
   top: 50px;
-  left: 0;
+  left: 15px;
   width: 100%;
   display: flex;
   z-index: 90;
@@ -10,38 +10,51 @@
   padding: 6px;
 
 }
-.empty{
-  width: 190px;
+
+.react-dropdown-select-content{
+  height: 30px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  font-size: 12px;
+  input{
+    font-size: 0;
+    height: 0;
+  }
+
 }
-.empty-r{
-  width: 600px;
-  position: relative;
-  left: 90px;
+.react-dropdown-select-option-label{
+  height: 10px;
 }
 
-.categories{
-  //position: absolute;
-  //left: 400px;
-
-  top: 6px;
-
+.react-dropdown-select{
+  height: 40px;
+  left: 20px;
+  max-width: 300px;
+  border-radius: 5px;
 }
 .img-2{
   position: absolute;
-  height: 35px;
-  left: 150px;
-  top: 6px;
+  left: 0px;
+  top: 3px;
+  height: 30px;
 }
 
 .sort{
-  position: absolute;
-  left: 28px;
-
-  top: 6px;
-  img{
-    position: absolute;
-    height: 30px;
-    left: -28px;
-    top: 3px;
+  position: relative;
+  left: 20px;
+  .form-control{
+    width: 115px;
+    height: 40px;
   }
 }
+
+.img-1{
+  position: absolute;
+  left: -21px;
+  top: 4px;
+  height: 30px;
+}
+
+
+
+

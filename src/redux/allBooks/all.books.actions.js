@@ -11,10 +11,6 @@ export function alreadyInWishlistRequest(){
     return {type: types.ALREADY_IN_WISHLIST}
 }
 
-export function removeAlreadyInWishlistRequest(){
-    return {type: types.REMOVE_ALREADY_IN_WISHLIST}
-}
-
 export function changeSearchKeyRequest(payload){
     return {type: types.CHANGE_SEARCH_KEY, payload:payload}
 }

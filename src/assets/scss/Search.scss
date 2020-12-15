@@ -1,15 +1,20 @@
 .search{
-  position: absolute;
-  right: 0;
-  width: 300px;
-  top: 6px;
+  position: relative;
+  left: 20px;
+  height: 40px;
+  max-width: 300px;
+  Input{
+    height: 40px;
+  }
+
   img{
     position: absolute;
     height: 35px;
-    right: 20px;
+    right: 5px;
     top: 2px;
     opacity: 0.7;
   }
+
   img:hover{
     -moz-transition: all 0.2s;
     -webkit-transition: all 0.2s;

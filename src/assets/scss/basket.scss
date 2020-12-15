@@ -1,0 +1,35 @@
+.info-panel-basket{
+  position: fixed;
+  right: 10px;
+  top: 60px;
+  height: 300px;
+  width: 150px;
+  z-index: 50;
+  h3{
+    text-align: center;
+    color: #CE7AFA;
+  }
+}
+
+.clear-basket{
+  height: 50px;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+}
+
+.buy-basket{
+  height: 80px;
+  position: relative;
+  right: -75px;
+  opacity: 0.8;
+}
+
+.buy-basket:hover{
+  -moz-transition: all 0.2s;
+  -webkit-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s;
+  opacity:1;
+  filter:alpha(opacity=100);
+}

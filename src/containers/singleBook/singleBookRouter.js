@@ -1,37 +1,31 @@
 import React from "react"
 import {connect} from "react-redux";
-import {Route} from "react-router-dom";
 import SingleBook from "../../components/singleBook/SingleBook";
+import {setSelectedBookAction} from "../../redux/basket/basket.actions";
 
-class SingleBookRouter extends React.Component{
-
+class SingleBookRouter extends React.Component {
+    componentDidMount() {
+        const bookId = this.props.match.params.id;
+        const book = this.props.items.find(item => item.id === bookId);
+        if (book) {
+            this.props.setSelectedBook(book);
+        }
+    }
 
     render() {
-
-
-        const items = this.props.items.map((item) => {
-            return(
-                <Route key = {item.id} exact path = {`/books/${item.id}`}>
-                    <SingleBook  item = {item}/>
-                </Route>
-            );
-        });
-        return (
-            <Route>
-                {items}
-            </Route>
-
-
-
-
-
-        );
+        return this.props.selectedBook.id ? <SingleBook item = {this.props.selectedBook} /> : null;
     }
 }
 
-const mapStateToProps =(...state) => {
+const mapStateToProps =(state) => {
     return({
-        items: state[0].allBooks.items
-    });}
+        items: state.allBooks.items,
+        selectedBook: state.basket.selectedBook
+    })
+}
 
-export default connect(mapStateToProps, null)(SingleBookRouter)
+const mapDispatchToProps = dispatch => ({
+    setSelectedBook: (book) => dispatch(setSelectedBookAction(book))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(SingleBookRouter)

@@ -4,32 +4,28 @@ import {calcTotalCost} from "../../helpers/helpers";
 const INITIAL_STATE = {
     items: [],
     totalCost: 0,
+    selectedBook: {},
 };
 
 const basketReducer = (state = INITIAL_STATE, action) => {
-    let tmpItems, tpmTotalCost;
     switch (action.type) {
         case type.ADD_TO_BASKET:
-            let alreadyInBook = false;
-            tmpItems =  [...state.items];
-            tmpItems.forEach((item) => {
-                if(item.id === action.payload.id) alreadyInBook=true; });
-            if(!alreadyInBook) tmpItems.push(action.payload);
-            tpmTotalCost = calcTotalCost(tmpItems);
+            const alreadyInBook = state.items.some(item => item.id === action.payload.id);
+            const addedItems = alreadyInBook ? state.items : state.items.concat(action.payload);
+
             return {
                 ...state,
-                items: tmpItems,
-                totalCost: tpmTotalCost
+                items: addedItems,
+                totalCost: calcTotalCost(addedItems)
             }
+
         case type.REMOVE_FROM_BASKET:
-            tmpItems = [...state.items];
-            tmpItems.forEach((item,index) => {
-                if(item.id === action.payload){item.multiplier = 1; tmpItems.splice(index, 1);}});
-            tpmTotalCost = calcTotalCost(tmpItems);
+            const filteredItems = state.items.filter(item => item.id !== action.payload);
+
             return {
                 ...state,
-                items: tmpItems,
-                totalCost: tpmTotalCost
+                items: filteredItems,
+                totalCost: calcTotalCost(filteredItems)
             }
 
         case type.CLEAR_BASKET:
@@ -40,27 +36,33 @@ const basketReducer = (state = INITIAL_STATE, action) => {
             }
 
         case type.CHANGE_MULTIPLIER:
-            tmpItems = [...state.items];
-            tmpItems.forEach((item,index) => {
+            const tmpItems = state.items.map((item) =>
+            {
                 if(item.id === action.payload.id){
-                    (action.payload.multiplier === -100)? item.multiplier+=1
-                        : (action.payload.multiplier === -1 && item.multiplier !==1)?
-                        item.multiplier-=1
-                            : (action.payload.multiplier > 0)?
-                            item.multiplier= action.payload.multiplier
-                                : console.log("");
+                    if(action.payload.multiplier){
+                        item.multiplier++;
+                    } else if(item.multiplier >= 2){
+                        item.multiplier--;
+                    }
                 }
+                return item
+            })
 
-            });
-            tpmTotalCost = calcTotalCost(tmpItems);
             return {
                 ...state,
                 items: tmpItems,
-                totalCost: tpmTotalCost
+                totalCost: calcTotalCost(tmpItems)
+            }
+
+        case type.SET_SELECTED_BOOK:
+            return {
+                ...state,
+                selectedBook: action.payload
             }
 
         default:
             return state;
     }
-};
+}
+
 export default basketReducer;

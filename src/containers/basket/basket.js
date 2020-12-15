@@ -6,34 +6,44 @@ import {
     clearBasketRequest,
     removeBookFromBasketRequest
 } from "../../redux/basket/basket.actions";
+import {Row} from "reactstrap";
+import '../../assets/scss/basket.scss'
+import buyImg from '../../assets/images/buy.png'
+import NothingHere from "../../components/basket/nothingHere";
 
 class Basket extends React.Component{
     render() {
         const items = this.props.items.map((item,index) => {
             return(
-                <BasketBookEntity
-                    key={'wishlist'+index}
-                    item = {item}
-                    removeBookFromBasket = {this.props.removeBookFromBasket}
-                    changeMultiplier = {this.props.changeMultiplier}
-                />
+                <Row key={`basket${item.id}`}>
+                    <BasketBookEntity
+                        item={item}
+                        removeBookFromBasket={this.props.removeBookFromBasket}
+                        changeMultiplier={this.props.changeMultiplier}
+                    />
+                </Row>
             );
         });
         return(
             <div>
                 {items}
-                <div><h3>Total Cost: {this.props.totalCost}</h3></div>
+                {(this.props.items.length !== 0) &&
+                <div className='info-panel-basket'>
+                    <h3>Total Cost: {this.props.totalCost}</h3>
+                    <img className='buy-basket' src={buyImg} alt='0'/>
+                </div>}
+                {(this.props.items.length === 0) && <NothingHere alert = {'Your\'s basket is completely empty, you can find some books in main page'}/> }
             </div>
         );
     }
 }
 
-const mapStateToProps =(...state) =>{
+const mapStateToProps =(state) =>{
     return({
-        items: state[0].basket.items,
-        totalCost: state[0].basket.totalCost,
-    });}
-
+        items: state.basket.items,
+        totalCost: state.basket.totalCost,
+    })
+}
 
 const mapDispatchToProps = dispatch => ({
     removeBookFromBasket: (payload) => {dispatch(removeBookFromBasketRequest(payload))},

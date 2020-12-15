@@ -6,13 +6,13 @@ import {
     removeBookFromWishlistRequest
 } from "../../redux/wishlist/wishlist.actions";
 import {addBookToBasketRequest} from "../../redux/basket/basket.actions";
-import {Col, Row} from "reactstrap";
+import {Row} from "reactstrap";
+import NothingHere from "../../components/basket/nothingHere";
 
 class Wishlist extends React.Component{
-   render() {
+    render() {
         const items = this.props.items.map((item,index) => {
             return(
-                <Col  xs='4' key={item.id}>
                     <BookEntity
                         key={'wishlist'+index}
                         item = {item}
@@ -20,27 +20,27 @@ class Wishlist extends React.Component{
                         addBookToBasket ={this.props.addBookToBasket}
                         removeBookFromWishlist = {this.props.removeBookFromWishlist}
                     />
-                </Col>
                 );
         });
         return(
-            <Row style = {{width: '1000px'}}>{items}</Row>
+            <div>
+                <Row style = {{width: '1000px', position: 'relative', marginLeft: 'auto', marginRight: 'auto'}}>{items}</Row>
+                {(this.props.items.length === 0) && <NothingHere alert = {'Nothing here right now, but you can add stuff on main page and comeback :)'}/> }
+            </div>
         );
     }
 }
 
-const mapStateToProps =(...state) =>{
+const mapStateToProps =(state) =>{
     return({
-        items: state[0].wishlist.items,
-    });}
-
+        items: state.wishlist.items,
+    })
+}
 
 const mapDispatchToProps = dispatch => ({
-    removeBookFromWishlist: (payload) => {
-        dispatch(removeBookFromWishlistRequest(payload))
-    },
+    removeBookFromWishlist: (payload) => dispatch(removeBookFromWishlistRequest(payload)),
     clearWishlist: () => dispatch(clearWishlistRequest()),
     addBookToBasket: (payload) => dispatch(addBookToBasketRequest(payload)),
-
 })
+
 export default connect(mapStateToProps, mapDispatchToProps)(Wishlist)

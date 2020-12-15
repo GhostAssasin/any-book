@@ -4,14 +4,15 @@ import {changeVisibility, parseCategories, parseData} from "../../helpers/helper
 const INITIAL_STATE = {
     items: [],
     startIndex: 0,
-    searchKey: 'fantast',
+    searchKey: 'tales',
     searchField: '',
     orderBy: 'relevance',
     searchError: false,
     categories: [],
     selectedFilterCategories : [],
     filterCategoriesValue: [],
-    hasMore: false
+    hasMore: false,
+    serverError: false
 };
 
 const allBooksReducer = (state = INITIAL_STATE, action) => {
@@ -19,20 +20,27 @@ const allBooksReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case type.ALL_BOOKS_RECEIVED_RESPONSE: {
             let tmpHasMore = false;
-            if(action.totalItems>0){tmpHasMore = true}
-            const tmpItems = parseData(action.json.items, state.items);
-
+            if(action.json.totalItems > 0 || action.json.totalItems <= state.startIndex){tmpHasMore = true}
+            const tmpItems = parseData(action.json.items, state.items, state.filterCategoriesValue);
             const tmpCategories = parseCategories(action.json.items, state.items, state.categories);
 
             return {
                 ...state,
                 searchError: false,
                 items: [...state.items, ...tmpItems],
-                startIndex: (state.startIndex + 40),
+                startIndex: (state.startIndex + 20),
                 categories: tmpCategories,
-                hasMore: tmpHasMore
+                hasMore: tmpHasMore,
+                serverError: false
             }
         }
+
+        case type.ERROR_RESPONSE:
+            return {
+                ...state,
+                serverError: true
+            }
+
         case type.CHANGE_SEARCH_FIELD:
             return {
                 ...state,
@@ -40,12 +48,12 @@ const allBooksReducer = (state = INITIAL_STATE, action) => {
             }
 
         case type.CHANGE_SEARCH_KEY:
-
             return {
                 ...state,
                 searchKey: state.searchField,
                 searchField: ''
             }
+
         case type.CLEAR_ALL_BOOKS:
             return {
                 ...state,
@@ -56,18 +64,19 @@ const allBooksReducer = (state = INITIAL_STATE, action) => {
                 filterCategoriesValue: [],
                 hasMore: false
             }
+
         case type.ALL_BOOKS_FAILED_SEARCH_RESPONSE:
             return {
                 ...state,
                 searchError: true
             }
+
         case type.FILTER_CATEGORIES:
-        {const tmpItems = changeVisibility(state.items, action.payload);
             return {
                 ...state,
-                items: tmpItems
+                items: changeVisibility(state.items, action.payload)
             }
-        }
+
         case type.SET_FILTER_CATEGORIES:
         {
             let tmpFilterCategoriesValue = [{}];
@@ -79,9 +88,9 @@ const allBooksReducer = (state = INITIAL_STATE, action) => {
             }
         }
 
-
         default:
             return state;
     }
-};
+}
+
 export default allBooksReducer;

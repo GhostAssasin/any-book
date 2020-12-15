@@ -10,8 +10,8 @@ import {connect} from "react-redux";
 const AppHeader = (props) => {
     return (
         <div className='blank'>
-        <div className="header">
-               <Container>
+            <div className="header">
+                <Container>
                    <Row>
                        <div className = 'logo-container'>
                            <Link  to="/">
@@ -26,25 +26,23 @@ const AppHeader = (props) => {
                        <Link to="/basket">
                            <img src={basketImg} alt = '0'/>
                        </Link>
-
                    </div>
                    <div>
-                       <div>{props.wishlistCount}</div>
-                       <div>{props.basketCount}</div>
+                       {(props.wishlistCount>0) &&  <div className='wishlist-count'>{props.wishlistCount}</div>}
+                       {(props.basketCount>0) && <div className='basket-count'>{props.basketCount}</div>}
                    </div>
 
                </Container>
-        </div>
+            </div>
         </div>
     );
 }
-const mapStateToProps =(...state) =>{
+const mapStateToProps =(state) =>{
     return({
-        wishlistCount: state[0].wishlist.items.length,
-        basketCount: state[0].basket.items.length,
-
-
-    });}
+        wishlistCount: state.wishlist.items.length,
+        basketCount: state.basket.items.length,
+    })
+}
 
 
 export default connect(mapStateToProps, null)(AppHeader);

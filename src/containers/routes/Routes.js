@@ -10,11 +10,10 @@ export default class Routes extends React.Component{
     render() {
         return(
             <Switch>
-                <Route exact path='/wishlist'><Wishlist/></Route>
-                <Route exact path='/basket'><Basket/></Route>
-                <Route exact path='/' ><AllBooks/></Route>
-                <SingleBookRouter/>
-                <Route path='*' ><AllBooks/></Route>
+                <Route exact path='/wishlist' component={Wishlist} />
+                <Route exact path='/basket' component={Basket} />
+                <Route exact path='/books/:id' component={SingleBookRouter} />
+                <Route path='*' component={AllBooks} />
             </Switch>
         );
     }

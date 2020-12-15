@@ -6,7 +6,7 @@ import {
     clearAllBooksRequest,
     getAllBooksRequest
 } from "../../redux/allBooks/all.books.actions";
-import {Col, Input} from "reactstrap";
+import { Input} from "reactstrap";
 import searchImg from '../../assets/images/search.png';
 import '../../assets/scss/Search.scss'
 
@@ -28,16 +28,13 @@ class Search extends React.Component{
             }
         }
         return (
-
                 <div className= 'search'>
-                   <Col>
                        <Input
-                           onChange ={(event) => this.props.changeSearchField(event.target.value)}
-                           value = {this.props.searchField}
+                           onChange={(event) => this.props.changeSearchField(event.target.value)}
+                           value={this.props.searchField}
                            onKeyDown={_handleKeyDown}
                        />
-                   </Col>
-                    <img src={searchImg}  onClick = {() => {doSearch()}} alt={""}/>
+                    <img src={searchImg}  onClick={() => {doSearch()}} alt={""}/>
                 </div>
         );
 
@@ -45,12 +42,12 @@ class Search extends React.Component{
     }
 }
 
-const mapStateToProps =(...state) =>{
+const mapStateToProps = (state) =>{
     return({
-        searchField: state[0].allBooks.searchField,
-        startIndex: state[0].allBooks.startIndex,
-        searchKey: state[0].allBooks.searchKey,
-        orderBy: state[0].allBooks.orderBy
+        searchField: state.allBooks.searchField,
+        startIndex: state.allBooks.startIndex,
+        searchKey: state.allBooks.searchKey,
+        orderBy: state.allBooks.orderBy
     });}
 
 
@@ -60,4 +57,5 @@ const mapDispatchToProps = dispatch => ({
     changeSearchKey: (payload) => dispatch(changeSearchKeyRequest(payload)),
     changeSearchField: (payload) => dispatch(changeSearchFieldRequest(payload)),
 })
+
 export default connect(mapStateToProps, mapDispatchToProps)(Search)

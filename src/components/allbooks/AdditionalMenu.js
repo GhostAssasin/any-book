@@ -6,7 +6,7 @@ import {
     clearAllBooksRequest, filterCategoriesRequest,
     getAllBooksRequest, setFilterCategoriesRequest
 } from "../../redux/allBooks/all.books.actions";
-import  {Input} from "reactstrap";
+import {Col, Input, Row} from "reactstrap";
 import Search from "./Search";
 import Select from "react-dropdown-select";
 import '../../assets/scss/additionalMenu.scss'
@@ -27,58 +27,64 @@ class AdditionalMenu extends React.Component{
     }
     render() {
         return (
-            <div className='add-menu'>
-                <div className = 'empty'></div>
+            <Row className='add-menu'>
+                <Col xs={12} md={6} lg={4}>
                     <div className='sort'>
-                        <img src={sort}  alt = '0'/>
-                        <Input
-                            type='select'
-                            defaultValue = 'relevance'
-                            onChange={(event) => {
-                                this.props.clearAllBooks();
-                                this.props.getAllBooks({
-                                    startIndex: 0,
-                                    searchKey: this.props.searchKey,
-                                    orderBy: event.target.value});
-                            }}>
-                            <option value= 'relevance'>relevance</option>
-                            <option value= 'newest'>newest</option>
-
-                        </Input>
+                        <Row>
+                            <Col>
+                                <div>
+                                    <Input
+                                        className='sort-input'
+                                        type='select'
+                                        defaultValue='relevance'
+                                        onChange={(event) => {
+                                            this.props.clearAllBooks();
+                                            this.props.getAllBooks({
+                                                startIndex: 0,
+                                                searchKey: this.props.searchKey,
+                                                orderBy: event.target.value
+                                            });
+                                        }}>
+                                        <option value= 'relevance'>relevance</option>
+                                        <option value= 'newest'>newest</option>
+                                    </Input>
+                                    <img src={sort} className='img-1'  alt = '0'/>
+                                </div>
+                            </Col>
+                        </Row>
                     </div>
-                    <img className='img-2' src={filterImg}  alt = '0'/>
-
-                    <div className='categories'>
-
+                </Col>
+                <Col xs={12} md={6} lg={4}>
+                    <div>
+                        <img className='img-2' src={filterImg}  alt = '0'/>
                         <Select
-                            multi =  {true}
-                            options = {this.props.categories}
-                            onChange = {(value) => {this.props.filterCategories(value); this.props.setFilterCategories(value)}}
-                            values = {this.props.filterCategoriesValue}
-                            style = {{width: '300px'}}
-                            closeOnScroll = {true}
+                            className='filter-select'
+                            multi={true}
+                            options={this.props.categories}
+                            onChange={(value) => {this.props.filterCategories(value); this.props.setFilterCategories(value)}}
+                            values={this.props.filterCategoriesValue}
+                            closeOnScroll={true}
+                            searchable={false}
+                            separator={true}
                         />
                     </div>
-                    <div className= {'empty-r'}/>
-                    <Search/>
-            </div>
-
+                </Col>
+                <Col xs={12} md={6} lg={4}><Search/></Col>
+            </Row>
         );
-
-
     }
 }
 
-const mapStateToProps =(...state) =>{
+const mapStateToProps =(state) =>{
     return({
-        searchField: state[0].allBooks.searchField,
-        startIndex: state[0].allBooks.startIndex,
-        searchKey: state[0].allBooks.searchKey,
-        orderBy: state[0].allBooks.orderBy,
-        categories: state[0].allBooks.categories,
-        filterCategoriesValue: state[0].allBooks.filterCategoriesValue
-    });}
-
+        searchField: state.allBooks.searchField,
+        startIndex: state.allBooks.startIndex,
+        searchKey: state.allBooks.searchKey,
+        orderBy: state.allBooks.orderBy,
+        categories: state.allBooks.categories,
+        filterCategoriesValue: state.allBooks.filterCategoriesValue
+    })
+}
 
 const mapDispatchToProps = dispatch => ({
     getAllBooks: (payload) => dispatch(getAllBooksRequest(payload)),
@@ -88,4 +94,5 @@ const mapDispatchToProps = dispatch => ({
     filterCategories: (payload) => dispatch(filterCategoriesRequest(payload)),
     setFilterCategories: (payload) => dispatch(setFilterCategoriesRequest(payload))
 })
+
 export default connect(mapStateToProps, mapDispatchToProps)(AdditionalMenu)
